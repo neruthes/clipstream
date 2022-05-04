@@ -62,7 +62,7 @@
                 clipXhr.open('GET', `/www/clips/${userToken}/db/${clipid}`);
                 clipXhr.send();
                 clipXhr.onload = function (e) {
-                    document.querySelector(`.clipbox[data-clipid="${clipid}"] .clipbox-content`).innerHTML = '<div class="realboxcontent">' + e.target.responseText.replace(/</g, '&lt;').replace(/\n/g, '<br>') + '</div>';
+                    document.querySelector(`.clipbox[data-clipid="${clipid}"] .clipbox-content`).innerHTML = '<div class="realboxcontent">' + e.target.responseText.trim().replace(/</g, '&lt;').replace(/\n/g, '<br>') + '</div>';
                 };
             }, index * 50);
         });
