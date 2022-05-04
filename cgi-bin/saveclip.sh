@@ -27,11 +27,7 @@ TOKEN_DIGITS="$(echo "$INPUT_USER_TOKEN" | cut -d- -f2)"
 ENTROPY_RANDOM="$(echo "$TOKEN_DIGITS" | cut -c1-16)"
 AUTHCODE="$(echo "${MASTER_HASH}${INPUT_USERNAME}${ENTROPY_RANDOM}" | sha256sum | cut -c1-8)"
 INPUT_AUTHCODE="$(echo "$TOKEN_DIGITS" | cut -c17-)"
-# echo "debug: INPUT_USER_TOKEN=$INPUT_USER_TOKEN"
-# echo "debug: INPUT_USERNAME=$INPUT_USERNAME"
-# echo "debug: ENTROPY_RANDOM=$ENTROPY_RANDOM"
-# echo "debug: INPUT_AUTHCODE=$INPUT_AUTHCODE"
-# echo "debug: AUTHCODE=$AUTHCODE"
+
 if [[ "$AUTHCODE" != "$INPUT_AUTHCODE" ]]; then
     echo "[ERROR] Authentication failed. Invalid token."
     exit 1
@@ -44,12 +40,6 @@ fi
 # Some variables...
 URL_PREFIX_LIST="$(grep -v '#' $SECRETDIR/urlprefixlist)"
 
-
-
-
-# echo "$url"
-# echo "$wwwroot"
-# echo "$reqBodyData"
 
 
 ### Save the clip content
