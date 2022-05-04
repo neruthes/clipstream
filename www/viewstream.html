@@ -74,7 +74,6 @@
         listXhr.send();
         listXhr.onload = function () {
             console.log(listXhr.responseText);
-            document.querySelector('.content').innerHTML = `<pre>${listXhr.responseText}</pre>`;
             renderTimelineFromList(listXhr.responseText.trim().split('\n').reverse());
         };
     });
