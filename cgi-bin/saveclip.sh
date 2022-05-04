@@ -28,9 +28,17 @@ ENTROPY_RANDOM="$(echo "$TOKEN_DIGITS" | cut -c1-16)"
 AUTHCODE="$(echo "${MASTER_HASH}${INPUT_USERNAME}${ENTROPY_RANDOM}" | sha256sum | cut -c1-8)"
 INPUT_AUTHCODE="$(echo "$TOKEN_DIGITS" | cut -c17-)"
 
+READONLY_TOKEN="$INPUT_USERNAME-$ENTROPY_RANDOM"
+
 if [[ "$AUTHCODE" != "$INPUT_AUTHCODE" ]]; then
     echo "[ERROR] Authentication failed. Invalid token."
-    exit 1
+    exit 0
+fi
+
+touch $SECRETDIR/revokedtokens
+if [[ "$(grep "$INPUT_USER_TOKEN" $SECRETDIR/revokedtokens)" != "" ]]; then
+    echo "[ERROR] Authentication failed. Token has been revoked."
+    exit 0
 fi
 
 
@@ -44,7 +52,7 @@ URL_PREFIX_LIST="$(grep -v '#' $SECRETDIR/urlprefixlist)"
 
 ### Save the clip content
 CLIP_FN="$(date +%Y%m%d.%s).txt"
-USERDIR=/$WEBDIR/clips/$INPUT_USER_TOKEN
+USERDIR=/$WEBDIR/clips/$READONLY_TOKEN
 mkdir -p $USERDIR/db
 CLIP_PATH=/$USERDIR/db/$CLIP_FN
 echo "$reqBodyData" > $CLIP_PATH
@@ -62,5 +70,5 @@ done
 
 ### Return the viewer URL
 for pref in $URL_PREFIX_LIST; do
-    echo "  > Stream: $pref/www/view.html?token=$INPUT_USER_TOKEN"
+    echo "  > Stream: $pref/www/view.html?token=$READONLY_TOKEN"
 done
