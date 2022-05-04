@@ -24,7 +24,9 @@ sudo make install
 
 **Nginx**: Refer to the `/conf/clipstream.nginx.conf` file.
 
+### Online Demo
 
+Visit the [demo](https://clipstream.neruthes.xyz:2096/www/view.html?token=test-fe8cabd01f8cf01e).
 
 
 ## Copyright
