@@ -59,7 +59,7 @@ echo "$reqBodyData" > $CLIP_PATH
 echo "$CLIP_FN" >> $USERDIR/clipslist
 
 ### Clear old clips
-head -n2000 $USERDIR/clipslist > $USERDIR/clipslist.new
+tail -n2000 $USERDIR/clipslist > $USERDIR/clipslist.new
 mv $USERDIR/clipslist.new $USERDIR/clipslist
 for realfn in $(ls $USERDIR/db); do
     if [[ "$(grep "$realfn" $USERDIR/clipslist)" == "" ]]; then
